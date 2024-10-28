@@ -23,10 +23,6 @@ Bonus features
 #from Util import limpa_tela
 
 import os
-from time import sleep
-
-from select import select
-
 
 def limpa_tela():
     os.system('cls')
@@ -39,16 +35,24 @@ class Calculator:
         self.__finish = False
         self.__result = 0
 
-        self.__OP_ADDITION = '1'
-        self.__OP_SUBTRACTION = '2'
-        self.__OP_DIVISION = '3'
-        self.__OP_MULTIPLICATION = '4'
+        self.__OP_ADDITION = 1
+        self.__OP_SUBTRACTION = 2
+        self.__OP_DIVISION = 3
+        self.__OP_MULTIPLICATION = 4
+
+        self.__errors = []
+        self.__operation_message = ''
 
     def __title(self):
         print('---' * 4)
         print('CALCULATOR')
         print('---' * 4)
 
+    def __input_message(self, msg):
+        self.__operation_message += msg
+
+    def __limpa_message(self):
+        self.__operation_message = ''
 
     def __input_number(self):
         tryagain = True
@@ -73,37 +77,56 @@ class Calculator:
               '[4] Multiplication (*)')
         print('---' * 4)
 
-        tryagain = False
+        tryagain = True
         operation = 0
 
         while tryagain:
             limpa_tela()
             operation = input('operation: ')
 
-            tryagain = True if operation not in [self.__OP_ADDITION, self.__OP_SUBTRACTION, self.__OP_DIVISION, self.__OP_MULTIPLICATION] else False
+            tryagain = True if operation not in str([self.__OP_ADDITION, self.__OP_SUBTRACTION, self.__OP_DIVISION, self.__OP_MULTIPLICATION]) else False
 
         return int(operation)
 
-    def execute_operation(self):
+    def __execute_operation(self):
+
+        errors = ''
+        message = ''
+        message = str(self.__number[0])
 
         if self.__operation == self.__OP_ADDITION:
             self.__result = self.__number[0] + self.__number[1]
+            message += ' + '
         elif self.__operation == self.__OP_SUBTRACTION:
             self.__result = self.__number[0] - self.__number[1]
+            message += ' - '
         elif self.__operation == self.__OP_DIVISION:
             try:
                 self.__result = self.__number[0] / self.__number[1]
+                message += ' / '
             except ZeroDivisionError:
-                print("It's not possible divide by zero!")
+                errors = "It's not possible divide by zero!"
         elif self.__operation == self.__OP_MULTIPLICATION:
             self.__result = self.__number[0] * self.__number[1]
+            message += ' * '
 
+        message += str(self.__number[1])
 
-        return self.__result
+        message += ' = ' + str(self.__result)
+
+        self.__input_message(message)
+
+        if errors == '':
+            return self.__result
+        else:
+            self.__errors.append(errors)
+            return None
+
 
     def execute(self):
         while not self.__finish:
             limpa_tela()
+            self.__limpa_message()
 
             self.__title()
             value_1 = self.__input_number()
@@ -111,8 +134,20 @@ class Calculator:
             value_2 = self.__input_number()
             self.__number = (value_1, value_2)
 
+            result_operation = self.__execute_operation()
+
+            if result_operation is None:
+                #Reiniciar processo de escolhar do segundo número
+                #ou mostrar opção pra reiniciar cálculo
+                pass
+
+            else:
+                print(self.__operation_message)
 
 
 
 
 
+calc = Calculator()
+
+calc.execute()
