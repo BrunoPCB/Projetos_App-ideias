@@ -20,9 +20,9 @@ Bonus features
    to 3 places to be entered and operations to be carried out to the maximum number of decimal places
    entered for any one number.
 """
-#from Util import limpa_tela
-
 import os
+from time import sleep
+
 
 def limpa_tela():
     os.system('cls')
@@ -41,18 +41,23 @@ class Calculator:
         self.__OP_MULTIPLICATION = 4
 
         self.__errors = []
-        self.__operation_message = ''
+
+        self.__operation_list = ['+', '-', '/', '*']
+
+    @property
+    def operation_list(self):
+        return self.__operation_list
+
 
     def __title(self):
         print('---' * 4)
         print('CALCULATOR')
         print('---' * 4)
 
-    def __input_message(self, msg):
-        self.__operation_message += msg
-
-    def __limpa_message(self):
-        self.__operation_message = ''
+    def __message_operation(self, value_1='', value_2='', operation='', result=''):
+        print('---' * 6)
+        print(f'{value_1} {operation} {value_2} = {result}')
+        print('---' * 6)
 
     def __input_number(self):
         tryagain = True
@@ -60,7 +65,7 @@ class Calculator:
 
         while tryagain:
             try:
-                limpa_tela()
+                #limpa_tela()
                 number = int(input('Número: '))
 
                 tryagain = False
@@ -70,18 +75,19 @@ class Calculator:
         return number
 
     def __choose_operation(self):
-        print('---' * 4)
-        print('[1] Addition (+)\n'
-              '[2] Subtraction (-)\n'
-              '[3] Division (/)\n'
-              '[4] Multiplication (*)')
-        print('---' * 4)
+        operations = ('---' * 4 + '\n' +
+                     '[1] Addition (+)\n'+
+                     '[2] Subtraction (-)\n'+
+                     '[3] Division (/)\n'+
+                     '[4] Multiplication (*)\n'+
+                     '---' * 4 + '\n')
 
         tryagain = True
         operation = 0
 
         while tryagain:
-            limpa_tela()
+            #limpa_tela()
+            print(operations)
             operation = input('operation: ')
 
             tryagain = True if operation not in str([self.__OP_ADDITION, self.__OP_SUBTRACTION, self.__OP_DIVISION, self.__OP_MULTIPLICATION]) else False
@@ -91,30 +97,18 @@ class Calculator:
     def __execute_operation(self):
 
         errors = ''
-        message = ''
-        message = str(self.__number[0])
 
         if self.__operation == self.__OP_ADDITION:
             self.__result = self.__number[0] + self.__number[1]
-            message += ' + '
         elif self.__operation == self.__OP_SUBTRACTION:
             self.__result = self.__number[0] - self.__number[1]
-            message += ' - '
         elif self.__operation == self.__OP_DIVISION:
             try:
                 self.__result = self.__number[0] / self.__number[1]
-                message += ' / '
             except ZeroDivisionError:
                 errors = "It's not possible divide by zero!"
         elif self.__operation == self.__OP_MULTIPLICATION:
             self.__result = self.__number[0] * self.__number[1]
-            message += ' * '
-
-        message += str(self.__number[1])
-
-        message += ' = ' + str(self.__result)
-
-        self.__input_message(message)
 
         if errors == '':
             return self.__result
@@ -122,19 +116,28 @@ class Calculator:
             self.__errors.append(errors)
             return None
 
+    def __restart(self):
+        self.__finish = True if input('Do you want to finish the application? Yes[0] No[Any key]\n:') == '0' else False
 
     def execute(self):
         while not self.__finish:
             limpa_tela()
-            self.__limpa_message()
 
             self.__title()
             value_1 = self.__input_number()
+            self.__message_operation(str(value_1), '', '', '')
+
             self.__operation = self.__choose_operation()
+
+            self.__message_operation(str(value_1), '', self.__operation_list[self.__operation-1], '')
+
             value_2 = self.__input_number()
+
             self.__number = (value_1, value_2)
 
             result_operation = self.__execute_operation()
+
+            self.__message_operation(str(self.__number[0]), str(self.__number[1]), self.__operation_list[self.__operation-1], str(result_operation))
 
             if result_operation is None:
                 #Reiniciar processo de escolhar do segundo número
@@ -142,12 +145,12 @@ class Calculator:
                 pass
 
             else:
-                print(self.__operation_message)
+                sleep(2)
+                self.__restart()
 
 
 
 
 
 calc = Calculator()
-
 calc.execute()
