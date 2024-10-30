@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="box"></div>
+
+        <div id="options">
+
+            <div id="border_options">
+                <input type="number" placeholder="Top-left"  value="0" id="ip_top_left" class="ip_changes">
+                <input type="number" placeholder="Top-right" value="0" id="ip_top_right" class="ip_changes">
+                <input type="number" placeholder="Bottom-left" value="0" id="ip_bottom_left" class="ip_changes">
+                <input type="number" placeholder="Bottom-right" value="0"id="ip_bottom_right" class="ip_changes">
+            </div>
+            
+            <button id="bt_change" onclick="change_border()">CHANGE</button>
+
+            <div id="css_return">
+                <input id="css_comand">
+                <img id="copy_css" src="copy.svg" onclick="copy_css_comand()">
+            </div>            
+        </div>
+    </div>
+    
+</body>
+</html>

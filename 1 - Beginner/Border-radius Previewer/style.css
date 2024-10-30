@@ -1,0 +1,93 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+}
+
+#container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    height: 100vh;
+}
+
+#box{
+    width: 50vw;
+    height: 50vh;
+
+    border: solid 3px #000;    
+
+    position: relative;
+}
+
+#options{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: solid px #000;
+
+    width: 50vw;
+    height: 250px;    
+}
+
+.ip_changes{
+    width: 100px;
+    height: 30px;
+    margin: 5px;
+    text-indent: 5px;
+
+}
+
+#bt_change{
+    width: 100px;
+    height: 30px;
+
+    margin: 10px;
+}
+
+#css_return{
+    border: solid 2px #a8a8a8;
+    border-radius: 5px;
+
+    background-color: #e4e4e4;
+
+    width: 50vw;
+    height: 100px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#css_return p{
+    padding: 5px 0px;
+    text-align: center;
+}
+
+#css_comand{
+    background-color: #e4e4e4;
+    border: 0;
+
+    margin: 20px;
+    height: 50px;
+}
+
+#copy_css{
+
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+#copy_css:hover{
+    cursor: pointer;
+}
